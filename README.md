@@ -1,29 +1,52 @@
-# Otimização de Plantel com Programação Linear Inteira: Boston Celtics
+# Basketball Roster Optimisation — Integer Linear Programming
 
-> Modelo em Gurobi que escolhe o cinco inicial com melhor performance agregada, respeitando o orçamento de bónus e restrições táticas.
+An optimisation project using binary decision variables and Gurobi to select a five-player starting lineup from a set of 18 Boston Celtics players under budget and positional constraints.
 
-**Mestrado em Business Intelligence & Analytics (ISCAP)**, 2025/26
+**Academic context:** MSc in Business Intelligence & Analytics, ISCAP (2025/26)  
+**Authors:** Beatriz Teixeira, João Coelho, João Vasques, and Rui Parada
 
-## O problema
-Escolher **5 de 18 jogadores** dos Boston Celtics (NBA) de forma a **maximizar o overall agregado**, ponderado por pesos posicionais, cumprindo estas restrições:
-- orçamento de bónus por jogo de no máximo **1 milhão de dólares**;
-- no máximo **2 jogadores por posição**;
-- pelo menos **1 Power Forward**;
-- exclusão de jogadores com *Score* < 0,25.
+## Problem statement
 
-## Abordagem
-1. Cálculo de um *Player_Overall* normalizado (MinMaxScaler) a partir das estatísticas.
-2. Formulação em **Programação Linear Inteira**, com variáveis binárias de seleção.
-3. Resolução com **Gurobi** (`gurobipy`) no Google Colab.
+The objective is to select **five players from a pool of 18** while maximising the aggregate player rating, subject to the constraints defined in the project:
 
-## Resultado
-O modelo não escolhe simplesmente os 5 melhores jogadores. Escolhe a combinação que maximiza o desempenho coletivo dentro do orçamento, ou seja, resolve o equilíbrio entre qualidade e custo, que se aplica a qualquer problema de alocação de recursos limitados.
+- Total per-game bonus budget of no more than **$1 million**.
+- No more than two selected players per position.
+- At least one Power Forward.
+- Exclude candidates with a score below 0.25.
 
-## Stack
-`Python` · `Gurobi (gurobipy)` · `pandas` · `scikit-learn`
+The player overall score is calculated from selected statistics and normalised using MinMaxScaler.
 
-## Como correr
-Abre o notebook no Google Colab e carrega o ficheiro `Celtic_Stats.csv` (separador `;`) quando for pedido.
+## Optimisation approach
 
-## Autores
-Beatriz Teixeira · João Coelho · João Vasques · Rui Parada
+The problem is formulated as a **Binary Integer Linear Programming (BILP)** model:
+
+- A binary decision variable indicates whether each player is selected.
+- The objective function maximises the total weighted player score.
+- Constraints enforce lineup size, budget, positional limits, and eligibility.
+
+The model is solved with Gurobi through the `gurobipy` Python interface.
+
+## Why optimisation matters
+
+Selecting the five players with the highest individual ratings is not necessarily optimal when budget and roster composition constraints apply. Mathematical optimisation evaluates feasible combinations and identifies the best solution under the model's assumptions.
+
+## Technology stack
+
+- Python and pandas
+- scikit-learn (MinMaxScaler)
+- Gurobi Optimizer and gurobipy
+- Google Colab
+
+## Running the notebook
+
+1. Open the notebook in Google Colab.
+2. Upload `Celtic_Stats.csv` when prompted; the expected delimiter is a semicolon (`;`).
+3. Ensure that Gurobi is available and that an appropriate licence is configured.
+4. Run the notebook cells to prepare the data, formulate the model, and solve the optimisation problem.
+
+## Scope and limitations
+
+- The selected lineup depends on the input data, score construction, and constraints chosen for the exercise.
+- A normalised overall score is a modelling assumption and may not capture every aspect of player contribution.
+- The result is an optimisation exercise, not a prediction of actual match outcomes.
+- Gurobi licensing requirements apply.
